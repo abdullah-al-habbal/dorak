@@ -33,7 +33,7 @@ Part 3 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 - `GetProfileAction` [GET /api/v1/client/profile] — returns the authenticated client via `ClientProfileResource` (`id`, `name`, `email`, `phone`, `avatar`, `preferred_universe`, `email_verified_at`, `phone_verified_at`, `created_at`) — the same 8-key object login, register, social login and `PATCH /client/profile` return. Auth:client, verification scope (unverified clients allowed). Mobile uses it to restore the session client after a cold start.
 
 ### Profile Update
-- `UpdateProfileAction` [PATCH /api/v1/client/profile] — nullable name and email; a `password` key is refused with 422 (BG-61, as on `PATCH barber/profile`; test `ProfileCredentialChangeTest`). Auth:client. Changing the email clears `email_verified_at` and queues a new verification code (`SendEmailVerificationCodeJob`); the client is then limited to the verification-only routes until `POST /client/email/verify` succeeds.
+- `UpdateProfileAction` [PATCH /api/v1/client/profile] — nullable name and email; a `password` key is refused with 422 (BG-61, as on `PATCH barber/profile`; test `ProfileCredentialChangeTest`). Auth:client. Changing the email (more than letter case) requires `current_password` on both routes (422 `current_password`), and requests that carry an email are limited to 5 a minute per account (429) (BG-62, `Core\Support\ProfileEmailChange`). For a client it clears `email_verified_at` and queues a new verification code (`SendEmailVerificationCodeJob`); the client is then limited to the verification-only routes until `POST /client/email/verify` succeeds.
 - `UpdateProfileRequest` — validates email (unique ignoring current); `password` must be absent
 
 ### Model Relations

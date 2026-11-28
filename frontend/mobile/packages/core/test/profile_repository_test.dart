@@ -96,6 +96,35 @@ void main() {
       },
     );
 
+    test('updateProfile sends the current password with a new email', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: {
+                'id': 'client-1',
+                'name': 'Ahmad',
+                'email': 'new@example.com',
+              },
+            ),
+          );
+        },
+      );
+
+      await DioProfileRepository(clientWith(fake)).updateProfile(
+        email: 'new@example.com',
+        currentPassword: 'current-secret',
+      );
+
+      expect(captured.data, {
+        'email': 'new@example.com',
+        'current_password': 'current-secret',
+      });
+    });
+
     test('requestPhoneOtp posts the phone to the otp endpoint', () async {
       late RequestOptions captured;
       final fake = fakeDio(

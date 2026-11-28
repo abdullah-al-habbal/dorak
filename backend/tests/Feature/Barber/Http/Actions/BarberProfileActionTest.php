@@ -28,6 +28,7 @@ it('requires barber authentication for profile', function () {
 it('updates profile fields', function () {
     $response = $this->patchJson('/api/v1/barber/profile', [
         'email' => 'updated@test.com',
+        'current_password' => 'password',
         'is_freelancer' => true,
     ]);
 

@@ -30,6 +30,7 @@ use Modules\Booking\Http\Actions\Barber\CancelBookingAction;
 use Modules\Booking\Http\Actions\Barber\CompleteBookingAction;
 use Modules\Booking\Http\Actions\Barber\NoShowBookingAction;
 use Modules\Booking\Http\Actions\Barber\StartBookingAction;
+use Modules\Core\Constants\ProfileCredentialConstants;
 use Modules\Core\Enums\AccountAccessScope;
 use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
@@ -55,7 +56,8 @@ Route::prefix('barber')->name('barber.')->group(function (): void {
 
     Route::middleware(['auth:barber', EnsureBarberAccountAccess::class, ApplyPreferredLocaleMiddleware::class.':barber'])->group(function (): void {
         Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token')->middleware('throttle:5,1');
-        Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');
+        Route::patch('/profile', UpdateProfileAction::class)->name('profile.update')
+            ->middleware('throttle:'.ProfileCredentialConstants::PROFILE_EMAIL_CHANGE_LIMITER);
         Route::post('/portfolio', UploadPortfolioAction::class)->name('portfolio.upload');
         Route::get('/portfolio', ListPortfolioAction::class)->name('portfolio.list');
         Route::delete('/portfolio/{photo}', DeletePortfolioPhotoAction::class)->name('portfolio.delete');

@@ -1193,6 +1193,7 @@ class FakeProfileRepository implements ProfileRepository {
   String? lastOtpPhone;
   String? lastOtpCode;
   String? lastEmail;
+  String? lastCurrentPassword;
 
   @override
   Future<AvatarDto> uploadAvatar(String filePath) async {
@@ -1204,9 +1205,14 @@ class FakeProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<ClientDto> updateProfile({String? name, String? email}) async {
+  Future<ClientDto> updateProfile({
+    String? name,
+    String? email,
+    String? currentPassword,
+  }) async {
     updateCalls++;
     lastName = name;
+    lastCurrentPassword = currentPassword;
     final failure = updateError;
     if (failure != null) throw failure;
     lastEmail = email;

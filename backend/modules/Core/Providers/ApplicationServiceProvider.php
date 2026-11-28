@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Modules\Core\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Constants\DatabaseSafetyConstants;
 use Modules\Core\Constants\MorphMapConstants;
+use Modules\Core\Constants\ProfileCredentialConstants;
 use Modules\Core\Contracts\SmsSender;
 use Modules\Core\Models\DeviceTokenModel;
 use Modules\Core\Models\NotificationDeliveryModel;
@@ -58,12 +62,22 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
         $this->app->make(ProductionDeliveryGuard::class)->assertSafe();
         $this->prohibitDestructiveDatabaseCommands();
         $this->registerMorphMap();
+        $this->registerProfileEmailChangeLimiter();
         $this->registerFactoryResolution();
         Gate::policy(DeviceTokenModel::class, DeviceTokenPolicy::class);
         $this->loadAppRoutes();
         Broadcast::routes(['prefix' => 'api/v1', 'middleware' => ['api', 'auth:admin_api,branch_api,barber,client']]);
         require __DIR__.'/../Routes/channels.php';
         $this->scheduleNotificationDeliveryPruning();
+    }
+
+    /** Counts only the profile updates that carry an email (BG-62); other edits are not limited. */
+    private function registerProfileEmailChangeLimiter(): void
+    {
+        RateLimiter::for(ProfileCredentialConstants::PROFILE_EMAIL_CHANGE_LIMITER, fn (Request $request): Limit => $request->filled('email')
+            ? Limit::perMinute(ProfileCredentialConstants::PROFILE_EMAIL_CHANGE_PER_MINUTE)
+                ->by(ProfileCredentialConstants::PROFILE_EMAIL_CHANGE_LIMITER.':'.$request->user()?->getMorphClass().':'.$request->user()?->getAuthIdentifier())
+            : Limit::none());
     }
 
     /**

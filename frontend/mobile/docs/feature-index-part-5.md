@@ -55,3 +55,8 @@ See `docs/state-management/pagination.md`.
 ## Branch times (BG-55, BG-56)
 
 - `core` `BranchClock`: slot calls send the picked calendar date; slots, bookings and visits are shown on the branch clock (`utc_offset_minutes` from the backend, the device zone without it); book-again sends the picked time as `starts_at_local`. Mobile CI also runs `slot_date_time_zone_test.dart` with `TZ=Asia/Damascus`.
+
+## Email change asks for the password (BG-62)
+
+- `client_app` profile edit shows a current password field once the email differs by more than letter case (`ProfileEditCubit.changesEmail`) and `ProfileRepository.updateProfile` sends `current_password` with the new email. The form scrolls.
+- The backend refuses an email change without it, so builds released before this can no longer change the email. Tests: `profile_edit_flow_test.dart`, `profile_repository_test.dart`.

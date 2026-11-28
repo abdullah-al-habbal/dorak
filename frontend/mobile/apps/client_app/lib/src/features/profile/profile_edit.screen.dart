@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
 import 'package:client_app/src/features/profile/profile_edit.bloc.dart';
+import 'package:client_app/src/features/profile/widgets/profile_email_password_field.widget.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({
@@ -35,6 +36,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   late final _name = TextEditingController(text: widget.name);
   late final _phone = TextEditingController(text: widget.phone ?? '');
   late final _email = TextEditingController(text: widget.email);
+  final _currentPassword = TextEditingController();
   late final ProfileEditCubit _cubit;
 
   @override
@@ -52,6 +54,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       name: _name.text.trim(),
       phone: _phone.text.trim(),
       email: _email.text,
+      currentPassword: _currentPassword.text,
     );
     final state = _cubit.state;
     if (!mounted || !state.saved) return;
@@ -71,6 +74,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     _name.dispose();
     _phone.dispose();
     _email.dispose();
+    _currentPassword.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -84,7 +88,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         final error = state.error;
         return Scaffold(
           appBar: AppBar(title: Text(l10n.profileEditTitle)),
-          body: Padding(
+          body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
@@ -100,6 +104,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   decoration: InputDecoration(
                     labelText: l10n.profileEmailLabel,
                   ),
+                ),
+                ValueListenableBuilder<TextEditingValue>(
+                  valueListenable: _email,
+                  builder: (context, email, _) =>
+                      _cubit.changesEmail(email.text)
+                      ? ProfileEmailPasswordField(controller: _currentPassword)
+                      : const SizedBox.shrink(),
                 ),
                 TextField(
                   controller: _phone,

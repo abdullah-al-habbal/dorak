@@ -902,6 +902,12 @@ abstract class AppLocalizations {
   /// **'Current Password'**
   String get changePasswordCurrentLabel;
 
+  /// Helper under the current password field shown when the email is edited on the profile screen
+  ///
+  /// In en, this message translates to:
+  /// **'Required to change your email.'**
+  String get profileEmailPasswordHint;
+
   /// New password field label
   ///
   /// In en, this message translates to:

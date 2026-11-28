@@ -22,6 +22,7 @@ use Modules\Client\Http\Actions\Client\VerifyEmailAction;
 use Modules\Client\Http\Actions\Client\VerifyPhoneOtpAction;
 use Modules\Client\Http\Actions\Client\VerifyResetCodeAction;
 use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
+use Modules\Core\Constants\ProfileCredentialConstants;
 use Modules\Core\Enums\AccountAccessScope;
 use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
@@ -43,7 +44,8 @@ Route::prefix('client')->name('client.')->group(function (): void {
 
     Route::middleware(['auth:client', EnsureClientAccountAccess::class, ApplyPreferredLocaleMiddleware::class.':client'])->group(function (): void {
         Route::patch('/preferences/universe', UpdateUniversePreferenceAction::class)->name('preferences.universe');
-        Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');
+        Route::patch('/profile', UpdateProfileAction::class)->name('profile.update')
+            ->middleware('throttle:'.ProfileCredentialConstants::PROFILE_EMAIL_CHANGE_LIMITER);
         Route::post('/avatar', UploadAvatarAction::class)->name('avatar.upload');
         Route::delete('/account', DeleteAccountAction::class)->name('account.delete');
         Route::post('/phone/otp', RequestPhoneOtpAction::class)->name('phone.otp')->middleware('throttle:3,1');

@@ -5,7 +5,12 @@ import 'package:core/core.dart';
 abstract class ProfileRepository {
   Future<ClientDto> getProfile();
 
-  Future<ClientDto> updateProfile({String? name, String? email});
+  /// [currentPassword] is required by the backend when [email] is a new address.
+  Future<ClientDto> updateProfile({
+    String? name,
+    String? email,
+    String? currentPassword,
+  });
 
   Future<void> requestPhoneOtp(String phone);
 
@@ -40,8 +45,16 @@ class DioProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<ClientDto> updateProfile({String? name, String? email}) {
-    final data = <String, dynamic>{'name': ?name, 'email': ?email};
+  Future<ClientDto> updateProfile({
+    String? name,
+    String? email,
+    String? currentPassword,
+  }) {
+    final data = <String, dynamic>{
+      'name': ?name,
+      'email': ?email,
+      'current_password': ?currentPassword,
+    };
     return _apiClient.patch<ClientDto>(
       ApiEndpoints.profile.update,
       data: data,

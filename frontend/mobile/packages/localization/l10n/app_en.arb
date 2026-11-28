@@ -562,6 +562,8 @@
   "@changePasswordCurrentLabel": {
     "description": "Current password field label"
   },
+  "profileEmailPasswordHint": "Required to change your email.",
+  "@profileEmailPasswordHint": {"description": "Helper under the current password field shown when the email is edited on the profile screen"},
   "changePasswordNewLabel": "New Password",
   "@changePasswordNewLabel": {
     "description": "New password field label"

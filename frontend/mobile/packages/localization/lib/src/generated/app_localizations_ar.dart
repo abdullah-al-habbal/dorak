@@ -449,6 +449,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get changePasswordCurrentLabel => 'كلمة المرور الحالية';
 
   @override
+  String get profileEmailPasswordHint => 'مطلوبة لتغيير بريدك الإلكتروني.';
+
+  @override
   String get changePasswordNewLabel => 'كلمة المرور الجديدة';
 
   @override

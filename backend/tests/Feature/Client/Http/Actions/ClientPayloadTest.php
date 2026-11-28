@@ -71,7 +71,7 @@ describe('PATCH /api/v1/client/profile email change', function (): void {
         $client = ClientModel::factory()->create();
         $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
-        $response = $this->withToken($token)->patchJson('/api/v1/client/profile', ['email' => 'changed@example.com'])
+        $response = $this->withToken($token)->patchJson('/api/v1/client/profile', ['email' => 'changed@example.com', 'current_password' => 'password'])
             ->assertOk()
             ->assertJsonStructure(['data' => clientPayloadKeys()])
             ->assertJsonPath('data.email', 'changed@example.com')
@@ -88,7 +88,7 @@ describe('PATCH /api/v1/client/profile email change', function (): void {
         $client = ClientModel::factory()->create();
         $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
-        $this->withToken($token)->patchJson('/api/v1/client/profile', ['email' => 'changed@example.com'])->assertOk();
+        $this->withToken($token)->patchJson('/api/v1/client/profile', ['email' => 'changed@example.com', 'current_password' => 'password'])->assertOk();
         $this->app['auth']->forgetGuards();
 
         $this->withToken($token)->postJson('/api/v1/client/email/verify', [

@@ -448,6 +448,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changePasswordCurrentLabel => 'Current Password';
 
   @override
+  String get profileEmailPasswordHint => 'Required to change your email.';
+
+  @override
   String get changePasswordNewLabel => 'New Password';
 
   @override

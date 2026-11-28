@@ -62,6 +62,7 @@ void main() {
 
     expect(repository.updateCalls, 1);
     expect(repository.lastEmail, isNull);
+    expect(repository.lastCurrentPassword, isNull);
     expect(saved?.email, 'sara@example.com');
     expect(verifyEmail, isNull);
     expect(find.text('Edit profile'), findsNothing);
@@ -76,13 +77,40 @@ void main() {
       find.widgetWithText(TextField, 'sara@example.com'),
       'new@example.com',
     );
+    await tester.pump();
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Current Password'),
+      'current-secret',
+    );
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 
     expect(repository.lastEmail, 'new@example.com');
+    expect(repository.lastCurrentPassword, 'current-secret');
     expect(saved?.emailVerified, isFalse);
     expect(verifyEmail, 'new@example.com');
     expect(find.text('Edit profile'), findsNothing);
+  });
+
+  testWidgets('asks for the current password only when the email changes', (
+    tester,
+  ) async {
+    await openEdit(tester);
+    final password = find.widgetWithText(TextField, 'Current Password');
+    final email = find.widgetWithText(TextField, 'sara@example.com');
+
+    expect(password, findsNothing);
+    await tester.enterText(email, 'SARA@example.com');
+    await tester.pump();
+    expect(password, findsNothing);
+
+    await tester.enterText(
+      find.widgetWithText(TextField, 'SARA@example.com'),
+      'new@example.com',
+    );
+    await tester.pump();
+    expect(password, findsOneWidget);
+    expect(find.text('Required to change your email.'), findsOneWidget);
   });
 
   testWidgets('changing the phone routes to phone verification', (

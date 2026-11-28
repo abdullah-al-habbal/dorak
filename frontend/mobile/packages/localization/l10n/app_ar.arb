@@ -472,6 +472,7 @@
   "@changePasswordCurrentLabel": {
     "description": "Current password field label"
   },
+  "profileEmailPasswordHint": "مطلوبة لتغيير بريدك الإلكتروني.",
   "changePasswordNewLabel": "كلمة المرور الجديدة",
   "@changePasswordNewLabel": {
     "description": "New password field label"

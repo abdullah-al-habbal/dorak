@@ -9,6 +9,7 @@ use Modules\Barber\CQRS\Command\Barber\UpdateProfileCommand;
 use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Enums\VenueUniverse;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Core\Support\ProfileEmailChange;
 
 final class UpdateProfileRequest extends BaseApiFormRequest
 {
@@ -26,6 +27,7 @@ final class UpdateProfileRequest extends BaseApiFormRequest
             'password' => ['missing'],
             'is_freelancer' => ['nullable', 'boolean'],
             'universe' => ['nullable', Rule::enum(VenueUniverse::class)],
+            ...ProfileEmailChange::currentPasswordRules($this, 'barber'),
         ];
     }
 

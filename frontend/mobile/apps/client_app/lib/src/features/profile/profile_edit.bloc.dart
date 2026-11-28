@@ -41,25 +41,30 @@ class ProfileEditCubit extends Cubit<ProfileEditState> {
   final String initialEmail;
   final String initialPhone;
 
+  /// Whether saving [email] moves the account to another address, which needs the current password.
+  bool changesEmail(String? email) {
+    final trimmed = email?.trim() ?? '';
+    return trimmed.isNotEmpty &&
+        trimmed.toLowerCase() != initialEmail.trim().toLowerCase();
+  }
+
   Future<void> save({
     required String name,
     required String phone,
     String? email,
+    String? currentPassword,
   }) async {
     if (state.isSaving) return;
     emit(const ProfileEditState(isSaving: true));
-    final trimmed = email?.trim();
-    final emailChanged =
-        trimmed != null &&
-        trimmed.isNotEmpty &&
-        trimmed.toLowerCase() != initialEmail.trim().toLowerCase();
+    final emailChanged = changesEmail(email);
     final trimmedPhone = phone.trim();
     final phoneChanged =
         trimmedPhone.isNotEmpty && trimmedPhone != initialPhone.trim();
     try {
       final client = await _repository.updateProfile(
         name: name,
-        email: emailChanged ? trimmed : null,
+        email: emailChanged ? email?.trim() : null,
+        currentPassword: emailChanged ? currentPassword : null,
       );
       if (isClosed) return;
       emit(

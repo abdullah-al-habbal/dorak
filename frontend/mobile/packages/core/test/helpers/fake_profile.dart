@@ -15,7 +15,11 @@ class FakeProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<ClientDto> updateProfile({String? name, String? email}) {
+  Future<ClientDto> updateProfile({
+    String? name,
+    String? email,
+    String? currentPassword,
+  }) {
     throw UnimplementedError();
   }
 

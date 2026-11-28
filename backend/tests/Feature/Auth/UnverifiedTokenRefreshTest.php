@@ -38,7 +38,7 @@ it('refreshes the token of a client whose email change reset verification', func
     $client = ClientModel::factory()->create();
     $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
-    $this->withToken($token)->patchJson('/api/v1/client/profile', ['email' => 'changed@example.com'])->assertOk();
+    $this->withToken($token)->patchJson('/api/v1/client/profile', ['email' => 'changed@example.com', 'current_password' => 'password'])->assertOk();
     $this->app['auth']->forgetGuards();
 
     $response = $this->withToken($token)->postJson('/api/v1/client/refresh-token')

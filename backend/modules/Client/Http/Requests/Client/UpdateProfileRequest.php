@@ -9,6 +9,7 @@ use Illuminate\Validation\Validator;
 use Modules\Client\CQRS\Command\Client\UpdateProfileCommand;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Core\Support\PhoneNumberNormalizer;
+use Modules\Core\Support\ProfileEmailChange;
 
 final class UpdateProfileRequest extends BaseApiFormRequest
 {
@@ -20,6 +21,7 @@ final class UpdateProfileRequest extends BaseApiFormRequest
             // A password has its own routes, which prove who is asking and end the other sessions (BG-61).
             'password' => ['missing'],
             'phone' => ['nullable', 'string', 'max:20'],
+            ...ProfileEmailChange::currentPasswordRules($this, 'client'),
         ];
     }
 
