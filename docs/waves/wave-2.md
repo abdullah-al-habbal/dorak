@@ -20,7 +20,7 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 | W2.1a | BG-60 | A password set in an app ends dashboard sessions too, in one transaction with the account lock | reset and signed-in change revoke every session; a failed revocation changes nothing | done |
 | W2.1b | BG-61 | Refuse a password on the two profile routes | 422; password and sessions unchanged | done |
 | W2.1c | BG-62 | Require the current password to change the email there; client app asks for it | Pest and `melos verify` pass | done |
-| W2.1d | BG-63 | A branch password set by an admin or owner ends that branch's sessions | every old session is refused; other branches keep theirs | todo |
+| W2.1d | BG-63 | A branch password set by an admin or owner ends that branch's sessions | every old session is refused; other branches keep theirs | done |
 | W2.2 | BG-29 | Refresh proceeds only when it deleted exactly one token (Client, Barber, Branch `RefreshTokenHandler.php`) | parallel test: one 200, one 401, one live token | todo |
 | W2.3 | BG-30 | `UnverifiedSignupPurger` rechecks under the client lock | parallel test: a verified client survives | todo |
 | W2.4 | BG-16 | Throttle unauthenticated GET routes | a 429 test per named limiter | todo |
@@ -43,3 +43,4 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 | 2026-11-28 | BG-60 `fix(auth)` commit | W2.1a done, taken over from uncommitted work (owner). On an export of the previous commit, a dashboard session survived all three app resets and the client's signed-in change. The three reset cases of the new revocation-failure test failed before the transaction was added (new password kept). No parallel test of the account lock |
 | 2026-11-28 | BG-61 `fix(auth)` commit | W2.1b done. Six cases (client and barber; a value, empty and null) failed before the fix. The client and stylist apps' profile calls send no password, and the dashboard doesn't call these routes. What released app builds send wasn't checked |
 | 2026-11-28 | BG-62 `fix(auth)` commit | W2.1c done. Pest: 3090 passed; `melos run verify`: exit 0. The client app asks for the current password when the email is edited; released builds don't, so an email change from them gets 422. Not tried on a device. Follow-ups: BD-20, BD-21, BG-64 |
+| 2026-11-28 | BG-63 `fix(auth)` commit | W2.1d done. Five of the six new tests failed before the fix. Pest: 3096 passed. Found on the way, not changed: BG-65, BG-66, BG-67 |

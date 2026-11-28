@@ -9,12 +9,15 @@ use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Services\BranchHours;
 use Modules\Branch\Services\BranchTimeZones;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
+use Modules\Dashboard\Services\DashboardCredentialRevoker;
 
 final class UpdateBranchEloquentResolver
 {
     public function __construct(
         private readonly BranchHours $hours,
         private readonly BranchTimeZones $zones,
+        private readonly DashboardCredentialRevoker $credentials,
     ) {}
 
     /** @param array<string, mixed> $attributes */
@@ -39,6 +42,10 @@ final class UpdateBranchEloquentResolver
             }
 
             $branch->update($attributes);
+            // Whoever sets it, every session of the branch ends with the old password (BG-63).
+            if (isset($attributes['password'])) {
+                $this->credentials->revokeAll(DashboardActorTypeEnum::Branch, $branch);
+            }
             if (is_string($zone)) {
                 $this->zones->set((string) $branch->getKey(), $zone);
             }
